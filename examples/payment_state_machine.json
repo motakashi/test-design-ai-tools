@@ -1,0 +1,15 @@
+{
+  "state_machine": {
+    "states": ["Idle", "Processing", "Approved", "Declined", "Refunded"],
+    "initial_state": "Idle",
+    "final_states": ["Approved", "Declined", "Refunded"],
+    "transitions": [
+      { "from": "Idle",       "event": "submit",       "to": "Processing", "action": "Start payment gateway request" },
+      { "from": "Processing", "event": "approve",      "to": "Approved",   "action": "Charge card, send receipt" },
+      { "from": "Processing", "event": "decline",      "to": "Declined",   "action": "Notify user of failure" },
+      { "from": "Processing", "event": "timeout",      "to": "Declined",   "action": "Cancel request, notify user" },
+      { "from": "Approved",   "event": "refund",       "to": "Refunded",   "action": "Issue refund, send confirmation" }
+    ]
+  },
+  "coverage": "all_transitions"
+}
